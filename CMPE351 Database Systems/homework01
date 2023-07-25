@@ -1,0 +1,162 @@
+/* QUESTION 1 */
+DROP DATABASE IF EXISTS Bank;
+CREATE DATABASE IF NOT EXISTS Bank;
+USE BANK;
+
+/* QUESTION 2 - A */
+/* I created here Customer Table with the given values*/
+CREATE TABLE Customer(
+customer_ID int,
+name varchar(25),
+lastname varchar(25),
+registration_date date,
+PRIMARY KEY(customer_ID)
+);
+
+/* QUESTION 2 - B */
+/* I created here Branch Table with the given values */
+CREATE TABLE Branch(
+branch_ID int,
+branch_name varchar(25),
+cash_hold float(25),
+foundation_date date,
+PRIMARY KEY(branch_ID)
+);
+
+/* QUESTION 3 */
+/* I created here Loan Table according to Customer and Branch Tables and with the given values*/
+CREATE TABLE Loan(
+loan_ID int,
+loan_amount int,
+customer_ID int,
+branch_ID int,
+PRIMARY KEY(loan_ID),
+FOREIGN KEY(customer_ID) references Customer(customer_ID),
+FOREIGN KEY(branch_ID) references Branch(branch_ID)
+);
+
+/* QUESTION 4
+--> customer_ID is unique for Customer Table (PRIMARY KEY)
+--> branch_ID is unique for Branch Table (PRIMARY KEY)
+--> loan_ID is unique for Loan Table (PRIMARY KEY)
+--> customer_ID and branch_ID are FOREIGN KEY in Loan Table so we can get and access the datas.
+*/
+
+/* QUESTION 5 */
+/* I populated the tables with the records */
+/* CUSTOMER */
+INSERT INTO Customer VALUES(
+111,
+"Elif Naz",
+"Erçin",
+"2015-10-05"
+);
+INSERT INTO Customer VALUES(
+112,
+"Pelin",
+"Durak",
+"2014-02-04"
+);
+INSERT INTO Customer VALUES(
+113,
+"Ataberk",
+"Balkan",
+"2017-04-21"
+);
+INSERT INTO Customer VALUES(
+114,
+"Ege",
+"Küçük",
+"2016-05-19"
+);
+INSERT INTO Customer VALUES(
+115,
+"Aybüke",
+"Altunbeğ",
+"2017-04-21"
+);
+
+/* BRANCH */
+INSERT INTO Branch VALUES(
+1,
+"Beşiktaş",
+3500.90,
+"2015-10-05"
+);
+INSERT INTO Branch VALUES(
+2,
+"Kadıköy",
+7200.87,
+"2015-02-04"
+);
+INSERT INTO Branch VALUES(
+3,
+"Pendik",
+10780.50,
+"2017-04-22"
+);
+INSERT INTO Branch VALUES(
+4,
+"Bakırköy",
+5780.00,
+"2016-06-19"
+);
+INSERT INTO Branch VALUES(
+5,
+"Beylikdüzü",
+9550.00,
+"2017-04-25"
+);
+
+/* LOAN */
+INSERT INTO Loan VALUES(
+201,
+2100.75,
+111,
+1
+);
+INSERT INTO Loan VALUES(
+202,
+31299,
+112,
+1
+);
+INSERT INTO Loan VALUES(
+203,
+7722.92,
+113,
+3
+);
+INSERT INTO Loan VALUES(
+204,
+3999.99,
+114,
+2
+);
+INSERT INTO Loan VALUES(
+205,
+5578.67,
+115,
+5
+);
+
+/* QUESTION 6 */
+/* Here I showed which customers are in branch 2 */
+SELECT customer_ID FROM Loan WHERE branch_ID=2;
+
+/* QUESTION 7 */
+/* Here I added score to Customer and added liability to Branch */
+ALTER TABLE Customer ADD score int;
+ALTER TABLE Branch ADD liability float;
+
+/* QUESTION 8 */
+/* I wrote the formula of gain 10 points each year as a customer according the years */
+UPDATE Customer SET score=(DATEDIFF(CURRENT_TIMESTAMP (), registration_date)/360)*10;
+
+/* QUESTION 9 */
+/* I wrote the formula of liability for customers' */
+UPDATE Branch SET liability=((DATEDIFF(CURRENT_TIMESTAMP (), foundation_date)/360)/cash_hold)*100;
+
+
+SELECT * FROM Customer;
+SELECT * FROM Branch;
